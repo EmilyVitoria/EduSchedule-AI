@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EduSchedule AI | Gestão escolar</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  {% if modo == 'sistema' %}<script src="{{ url_for('static', filename='js/js.js') }}" defer></script>{% endif %}
+
+</head>
+<body>
+
+{# O Flask escolhe qual tela mostrar: identificação, histórico privado ou sistema. #}
+{% if modo == 'identificar' %}
+
+<main class="entrada-layout">
+  <article class="panel entrada-card">
+    <div class="entrada-brand"><span class="brand-icon">E</span><h1>EduSchedule AI</h1><p>Projeto de extensão universitária • Uninter</p></div>
+    <div class="entrada-corpo">
+      <h2>Bem-vindo(a)!</h2><p class="muted">Identifique-se para testar o sistema de gestão escolar.</p>
+      {% if mensagem %}<p class="entrada-erro" role="alert">{{ mensagem }}</p>{% endif %}
+      <form method="post" class="form-stack">
+        <input type="hidden" name="csrf" value="{{ token }}">
+        <label>Nome completo<input name="nome" minlength="2" maxlength="120" required value="{{ nome }}" placeholder="Digite seu nome"></label>
+        <label>Função na instituição<select name="funcao" required><option value="">Selecione</option>{% for item in funcoes %}<option {% if item == funcao %}selected{% endif %}>{{ item }}</option>{% endfor %}</select></label>
+        <p class="muted">Seu nome, função, data e hora serão registrados para comprovar a aplicação acadêmica. A responsável pelo projeto poderá consultar esses dados e apresentá-los à faculdade como evidência. Não informe dados de alunos ou outras pessoas reais na demonstração.</p>
+        <label class="ciencia"><input type="checkbox" name="ciente" value="sim" required> Estou ciente e desejo participar.</label>
+        <button class="primary-btn" type="submit">Acessar sistema →</button>
+      </form>
+    </div>
+  </article>
+</main>
+
+{% elif modo == 'acessos' %}
+<main class="content acessos-admin">
+  <header class="topbar"><div><span class="eyebrow">EDUSCHEDULE AI • ADMINISTRAÇÃO</span><h1>Histórico de acessos</h1><p>Registro privado para comprovação acadêmica • Horário de Picos–PI</p></div><a class="secondary-btn" href="{{ url_for('inicio') }}">Voltar ao sistema</a></header>
+  <div class="stats"><article class="stat-card"><span>Total de acessos</span><strong>{{ registros|length }}</strong></article><article class="stat-card"><span>Nomes distintos</span><strong>{{ distintos }}</strong><small>Identificação autodeclarada</small></article></div>
+  <article class="panel"><div class="section-head"><h2>Participantes</h2><a class="primary-btn" href="{{ url_for('exportar_acessos') }}">Exportar CSV</a></div><div class="table-scroll"><table><thead><tr><th>Nome</th><th>Função</th><th>Data</th><th>Horário</th></tr></thead><tbody>{% for r in registros %}<tr><td>{{ r.nome }}</td><td>{{ r.funcao }}</td><td>{{ r.data }}</td><td>{{ r.hora }}</td></tr>{% else %}<tr><td colspan="4" class="empty">Nenhum acesso registrado.</td></tr>{% endfor %}</tbody></table></div></article>
+  <p class="muted">Os registros indicam entradas na demonstração, não comprovam identidade nem uso de cada funcionalidade. Preserve a privacidade ao compartilhar evidências.</p>
+</main>
+{% else %}
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-icon">E</span><div><strong>EduSchedule <span>AI</span></strong><small>Gestão escolar</small></div></div>
+    <p class="nav-label">NAVEGAÇÃO</p>
+    <nav>
+      <button class="nav-btn active" data-section="painel"><span>▦</span> Visão geral</button>
+      <button class="nav-btn" data-section="alunos"><span>♙</span> Alunos</button>
+      <button class="nav-btn" data-section="professores"><span>♧</span> Professores</button>
+      <button class="nav-btn" data-section="horarios"><span>▦</span> Horários</button>
+      <button class="nav-btn" data-section="frequencia"><span>✓</span> Frequência</button>
+      <button class="nav-btn" data-section="notas"><span>▤</span> Notas</button>
+      <button class="nav-btn" data-section="configuracoes"><span>⚙</span> Configurações</button>
+    </nav>
+    <div class="sidebar-footer"><span class="status-dot"></span> Projeto acadêmico • Demonstração</div>
+  </aside>
+
+  <main class="content">
+    <header class="topbar"><div><span class="eyebrow">EDUSCHEDULE AI • V3</span><h1 id="page-title">Visão geral</h1><p id="page-description">Acompanhe os dados da escola em um só lugar.</p></div><div class="usuario-demo"><div class="avatar">DEMO</div><form action="{{ url_for('sair') }}" method="post"><input type="hidden" name="csrf" value="{{ token }}"><button class="secondary-btn" type="submit">Sair</button></form></div></header>
+
+    <!-- Indicadores e atalhos do sistema. -->
+    <section id="painel" class="section active">
+      <div class="intro-banner"><div><span class="banner-kicker">BEM-VINDA!</span><h2>Organização escolar mais simples.</h2><p>Projeto de extensão universitária • Teste com dados fictícios.</p></div><span class="banner-symbol">✦</span></div>
+      <div class="stats">
+        <article class="stat-card"><div class="stat-icon blue">♙</div><span>Alunos ativos</span><strong id="total-alunos">0</strong><small>Matriculados no sistema</small></article>
+        <article class="stat-card"><div class="stat-icon purple">▦</div><span>Turmas</span><strong>3</strong><small>1º, 2º e 3º ano</small></article>
+        <article class="stat-card"><div class="stat-icon orange">♧</div><span>Professores</span><strong id="total-professores">0</strong><small>Cadastrados</small></article>
+        <article class="stat-card"><div class="stat-icon green">◷</div><span>Descadastrados</span><strong id="total-inativos">0</strong><small>Histórico preservado</small></article>
+      </div>
+      <div class="panel-grid"><article class="panel"><h3>Alunos por turma</h3><p class="muted">Distribuição dos cadastros ativos</p><div id="turmas-painel" class="turmas-painel"></div></article><article class="panel"><h3>Comece por aqui</h3><p class="muted">Cadastre alunos e professores, vincule as disciplinas e depois gere os horários.</p><button class="primary-btn" id="atalho-alunos">Gerenciar alunos →</button></article></div>
+    </section>
+
+    <!-- Cadastro, pesquisa e alteração de situação dos alunos. -->
+    <section id="alunos" class="section">
+      <div class="section-head"><div><h2>Gestão de alunos</h2><p class="muted">Cadastre, edite, descadastre e reative estudantes.</p></div><button class="primary-btn" id="novo-aluno">+ Novo aluno</button></div>
+      <div class="panel"><div class="table-toolbar"><div class="tabs"><button class="tab active" data-status="ativos">Ativos</button><button class="tab" data-status="inativos">Descadastrados</button></div><input id="busca" type="search" placeholder="Buscar por nome ou matrícula" aria-label="Buscar alunos"></div>
+        <div class="table-scroll"><table><thead><tr><th>Nome</th><th>Matrícula</th><th>Turma</th><th>Status</th><th>Ações</th></tr></thead><tbody id="lista-alunos"></tbody></table></div></div>
+    </section>
+
+    <!-- Cadastro de professores, distribuição de disciplinas e bloqueios. -->
+    <section id="professores" class="section">
+      <div class="section-head"><div><h2>Professores e disciplinas</h2><p class="muted">Vincule cada disciplina a um professor e à turma.</p></div></div>
+      <div class="panel-grid">
+        <article class="panel"><h3>Cadastrar professor</h3><form id="form-professor" class="form-stack"><label>Nome completo<input name="nome" required minlength="2" maxlength="120" placeholder="Ex.: João Silva"></label><button class="primary-btn">+ Cadastrar professor</button></form><div id="lista-professores" class="item-list"></div></article>
+        <article class="panel"><h3>Distribuir disciplinas</h3><p class="muted">Máximo: 25 aulas por turma e 20 por professor na semana. A opção “Todas as turmas” repete a carga indicada em cada uma das três turmas.</p><form id="form-atribuicao" class="form-stack"><label>Professor<select name="professor_id" class="select-professores" required></select></label><label>Turma<select name="turma" required><option>1º ano</option><option>2º ano</option><option>3º ano</option><option value="todas">Todas as turmas (1º, 2º e 3º)</option></select></label><label>Disciplina<input name="disciplina" required maxlength="70" placeholder="Ex.: Matemática"></label><label>Aulas por semana<input type="number" name="aulas_semana" min="1" max="20" value="4" required></label><button class="primary-btn">+ Vincular disciplina</button></form></article>
+      </div>
+      <article class="panel top-gap"><h3>Disciplinas cadastradas</h3><div class="table-scroll"><table><thead><tr><th>Turma</th><th>Disciplina</th><th>Professor</th><th>Aulas/semana</th><th>Ação</th></tr></thead><tbody id="lista-atribuicoes"></tbody></table></div></article>
+    </section>
+
+    <!-- Geração e exclusão da grade semanal. -->
+    <section id="horarios" class="section">
+      <div class="section-head"><div><h2>Horários inteligentes</h2><p class="muted">Grade automática que respeita as indisponibilidades dos professores.</p></div><div class="grade-actions"><button class="secondary-btn" id="excluir-grade" type="button">Excluir plano de aulas</button><button class="primary-btn" id="gerar-grade" type="button">Gerar / atualizar grade</button></div></div>
+      <div class="panel-grid">
+        <article class="panel"><h3>Bloquear horário</h3><p class="muted">Exemplo: Matemática não pode ter aula na quinta às 07:00 quando o professor está indisponível.</p><form class="form-stack" id="form-restricao"><label>Professor<select name="professor_id" class="select-professores" required></select></label><label>Dia da semana<select name="dia"><option value="0">Segunda</option><option value="1">Terça</option><option value="2">Quarta</option><option value="3">Quinta</option><option value="4">Sexta</option></select></label><label>Horário<select name="horario" class="select-horarios"></select></label><button class="primary-btn">+ Adicionar bloqueio</button></form></article>
+        <article class="panel"><h3>Restrições cadastradas</h3><div id="lista-restricoes" class="item-list"></div><p class="note">Ao alterar vínculos ou restrições, gere a grade novamente. Bloqueios são aplicados ao professor em todas as turmas.</p></article>
+      </div>
+      <article class="panel top-gap"><div class="table-toolbar"><h3>Grade semanal</h3><select id="turma-grade" class="select-turmas"></select></div><div id="grade-horarios" class="table-scroll"></div><p class="note">Excluir o plano remove apenas os horários gerados; mantém cadastros, notas e chamadas. Horários vazios aparecem como livres. O gerador é baseado em regras, não em IA generativa.</p></article>
+    </section>
+
+    <!-- Chamada por aula e resumo de faltas por disciplina. -->
+    <section id="frequencia" class="section">
+      <div class="section-head"><div><h2>Controle de frequência</h2><p class="muted">Registre presença ou falta por aula e acompanhe o limite de 75%.</p></div></div>
+      <article class="panel"><h3>Fazer chamada</h3><div class="field-grid"><label>Turma<select id="turma-chamada" class="select-turmas"></select></label><label>Data<input id="data-chamada" type="date"></label><label>Horário<select id="horario-chamada" class="select-horarios"></select></label></div><button class="secondary-btn top-gap" id="buscar-chamada">Carregar aula e alunos</button><p id="descricao-chamada" class="muted"></p><div id="lista-chamada" class="item-list"></div><button class="primary-btn hidden top-gap" id="salvar-chamada">Salvar chamada</button></article>
+      <article class="panel top-gap"><h3>Resumo de frequência por disciplina</h3><div class="field-grid"><label>Turma<select id="turma-frequencia" class="select-turmas"></select></label><label>Disciplina<select id="disciplina-frequencia" class="select-atribuicoes"></select></label></div><button class="secondary-btn top-gap" id="ver-frequencia">Consultar frequência</button><div id="resumo-frequencia" class="table-scroll top-gap"></div><p class="note">O saldo de faltas é uma estimativa baseada nas semanas letivas e aulas semanais configuradas, sem descontar feriados ou reposições.</p></article>
+    </section>
+
+    <!-- Notas por bimestre e acompanhamento das médias. -->
+    <section id="notas" class="section">
+      <div class="section-head"><div><h2>Notas e médias</h2><p class="muted">Quatro bimestres, média automática e resultado por disciplina.</p></div></div>
+      <article class="panel"><div class="field-grid"><label>Turma<select id="turma-notas" class="select-turmas"></select></label><label>Disciplina<select id="disciplina-notas" class="select-atribuicoes"></select></label><label>Bimestre para editar<select id="bimestre-notas"><option value="1">1º bimestre</option><option value="2">2º bimestre</option><option value="3">3º bimestre</option><option value="4">4º bimestre</option></select></label></div><button class="secondary-btn top-gap" id="buscar-notas">Carregar alunos</button><p id="aviso-notas" class="muted"></p><div id="tabela-notas" class="table-scroll top-gap"></div><button class="primary-btn hidden top-gap" id="salvar-notas">Salvar notas do bimestre</button></article>
+    </section>
+
+    <!-- Parâmetros escolares usados pelo backend. -->
+    <section id="configuracoes" class="section">
+      <div class="section-head"><div><h2>Configurações</h2><p class="muted">Regras iniciais da escola, alteráveis na demonstração.</p></div></div>
+      <article class="panel narrow"><form id="form-configuracoes" class="form-stack"><label>Média mínima<input name="media_minima" type="number" min="0" max="10" step="0.1" required></label><label>Frequência mínima (%)<input name="frequencia_minima" type="number" min="1" max="100" step="0.1" required></label><label>Semanas letivas previstas<input name="semanas_letivas" type="number" min="1" max="52" required></label><button class="primary-btn">Salvar configurações</button></form></article>
+    </section>
+  </main>
+</div>
+
+<!-- Janela reutilizada para cadastro e edição do aluno. -->
+<dialog id="modal-aluno" aria-labelledby="modal-titulo"><form id="form-aluno"><div class="modal-head"><h2 id="modal-titulo">Novo aluno</h2><button class="close-btn" type="button" id="fechar-modal" aria-label="Fechar">×</button></div><label for="nome">Nome completo</label><input id="nome" name="nome" minlength="2" maxlength="120" required placeholder="Nome do aluno"><label for="matricula">Matrícula <small>(opcional)</small></label><input id="matricula" name="matricula" maxlength="30" placeholder="Ex.: 2026001"><label for="turma">Turma</label><select id="turma" name="turma" required><option value="">Selecione</option><option>1º ano</option><option>2º ano</option><option>3º ano</option></select><div class="modal-actions"><button type="button" class="secondary-btn" id="cancelar-modal">Cancelar</button><button class="primary-btn" type="submit" id="salvar-aluno">Salvar aluno</button></div></form></dialog>
+<div id="aviso" class="toast" role="status" aria-live="polite"></div>
+{% endif %}
+</body>
+</html>

@@ -1,0 +1,719 @@
+/* EduSchedule AI: estilos da interface, separados por áreas para facilitar a manutenção. */
+:root {
+    font-family:Inter,Segoe UI,Arial,sans-serif;
+    color:#17213b;
+    background:#f5f7fb;
+    font-synthesis:none
+}
+
+* {
+    box-sizing:border-box
+}
+
+body {
+    margin:0
+}
+
+button,input,select {
+    font:inherit
+}
+
+button {
+    cursor:pointer
+}
+
+/* Organização geral: menu lateral e área principal. */
+.layout {
+    min-height:100vh;
+    display:flex
+}
+
+.sidebar {
+    width:250px;
+    flex-shrink:0;
+    background:#111c38;
+    color:#d6def1;
+    padding:30px 16px;
+    display:flex;
+    flex-direction:column
+}
+
+.brand {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:0 10px 33px
+}
+
+.brand-icon {
+    background:#5775ed;
+    color:#fff;
+    font-weight:900;
+    font-size:25px;
+    width:40px;
+    height:40px;
+    display:grid;
+    place-items:center;
+    border-radius:12px
+}
+
+.brand strong {
+    font-size:17px;
+    letter-spacing:-.6px;
+    color:white
+}
+
+.brand strong span {
+    color:#8ea6ff
+}
+
+.brand small {
+    display:block;
+    color:#98a5c7;
+    font-size:12px;
+    margin-top:5px
+}
+
+.nav-label,.eyebrow {
+    font-size:10px;
+    letter-spacing:2px;
+    font-weight:700
+}
+
+.nav-label {
+    color:#8291b5;
+    padding:0 16px;
+    margin:12px 0
+}
+
+nav {
+    display:grid;
+    gap:6px
+}
+
+.nav-btn {
+    border:0;
+    background:transparent;
+    color:#c4cee7;
+    width:100%;
+    padding:13px 15px;
+    text-align:left;
+    border-radius:11px;
+    font-size:14px;
+    display:flex;
+    gap:14px;
+    align-items:center
+}
+
+.nav-btn span {
+    font-size:20px;
+    width:22px;
+    text-align:center
+}
+
+.nav-btn:hover,.nav-btn.active {
+    background:#293c68;
+    color:#fff
+}
+
+.sidebar-footer {
+    margin-top:auto;
+    padding:20px 9px 0;
+    font-size:12px;
+    color:#a3b0d0
+}
+
+.status-dot {
+    display:inline-block;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#60d5ab;
+    margin-right:7px
+}
+
+.content {
+    max-width:1600px;
+    width:100%;
+    padding:34px clamp(20px,4vw,60px) 70px;
+    margin:auto;
+    min-width:0
+}
+
+.topbar {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:34px
+}
+
+.eyebrow {
+    color:#6678ab
+}
+
+h1 {
+    font-size:29px;
+    margin:7px 0;
+    font-weight:800;
+    letter-spacing:-.8px
+}
+
+.topbar p,.muted {
+    color:#7b8497;
+    font-size:14px;
+    line-height:1.5;
+    margin:5px 0
+}
+
+.avatar {
+    width:48px;
+    height:48px;
+    border-radius:16px;
+    background:#e4eafa;
+    color:#5065a9;
+    display:grid;
+    place-items:center;
+    font-size:11px;
+    font-weight:800
+}
+
+.section {
+    display:none
+}
+
+.section.active {
+    display:block
+}
+
+/* Destaque de boas-vindas do painel. */
+.intro-banner {
+    background:linear-gradient(115deg,#425add,#5a79ed);
+    color:#fff;
+    border-radius:18px;
+    padding:32px 34px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    overflow:hidden
+}
+
+.banner-kicker {
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:2px;
+    color:#d9e2ff
+}
+
+.intro-banner h2 {
+    font-size:24px;
+    margin:12px 0 10px;
+    letter-spacing:-.5px
+}
+
+.intro-banner p {
+    color:#e0e7ff;
+    font-size:14px;
+    margin:0
+}
+
+.banner-symbol {
+    font-size:95px;
+    color:#ffffff32;
+    line-height:1
+}
+
+/* Cartões com os indicadores. */
+.stats {
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:18px;
+    margin:25px 0
+}
+
+.stat-card,.panel,.placeholder {
+    background:#fff;
+    border:1px solid #e8ecf5;
+    border-radius:16px;
+    box-shadow:0 4px 17px #1b325008
+}
+
+.stat-card {
+    padding:22px;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start
+}
+
+.stat-icon {
+    width:39px;
+    height:39px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    font-size:21px;
+    margin-bottom:17px
+}
+
+.blue {
+    background:#e7edff;
+    color:#536fe5
+}
+
+.purple {
+    background:#f0e9ff;
+    color:#8865d7
+}
+
+.orange {
+    background:#fff0e2;
+    color:#ed9a42
+}
+
+.green {
+    background:#ddf8ed;
+    color:#29ae7e
+}
+
+.stat-card span {
+    font-size:13px;
+    color:#6c7690
+}
+
+.stat-card strong {
+    font-size:30px;
+    margin:7px 0 2px
+}
+
+.stat-card small {
+    font-size:11px;
+    color:#9aa4b7
+}
+
+.panel-grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px
+}
+
+.panel {
+    padding:24px
+}
+
+.panel h3 {
+    margin:0;
+    font-size:17px
+}
+
+.turmas-painel {
+    margin-top:22px;
+    display:grid;
+    gap:18px
+}
+
+.turma-info {
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    margin-bottom:7px
+}
+
+.progress {
+    height:8px;
+    background:#edf0fa;
+    border-radius:99px;
+    overflow:hidden
+}
+
+.progress span {
+    display:block;
+    height:100%;
+    border-radius:99px;
+    background:#627bec
+}
+
+.primary-btn {
+    background:#4e69de;
+    border:1px solid #4e69de;
+    color:#fff;
+    padding:11px 18px;
+    border-radius:10px;
+    font-weight:700;
+    font-size:13px
+}
+
+.primary-btn:hover {
+    background:#3e59ca
+}
+
+.secondary-btn {
+    background:white;
+    color:#43506b;
+    border:1px solid #dce2ef;
+    padding:10px 16px;
+    border-radius:10px
+}
+
+.section-head {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin:8px 0 23px
+}
+
+.section-head h2 {
+    margin:0;
+    font-size:21px
+}
+
+.table-toolbar {
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:center;
+    margin-bottom:19px
+}
+
+.tabs {
+    display:flex;
+    gap:5px;
+    background:#f1f4fa;
+    padding:5px;
+    border-radius:11px
+}
+
+.tab {
+    background:transparent;
+    border:0;
+    color:#75809c;
+    padding:10px 13px;
+    border-radius:8px;
+    font-weight:600;
+    font-size:12px
+}
+
+.tab.active {
+    background:#fff;
+    color:#435dd2;
+    box-shadow:0 1px 6px #1b325012
+}
+
+input,select {
+    border:1px solid #dce3f0;
+    border-radius:10px;
+    padding:11px 12px;
+    outline:none;
+    background:#fff;
+    color:#24304b
+}
+
+input:focus,select:focus {
+    border-color:#5b78e8;
+    box-shadow:0 0 0 3px #5b78e821
+}
+
+#busca {
+    width:275px;
+    max-width:100%;
+    font-size:13px
+}
+
+/* Permite rolagem horizontal das tabelas em telas menores. */
+.table-scroll {
+    overflow-x:auto
+}
+
+table {
+    width:100%;
+    border-collapse:collapse;
+    text-align:left;
+    font-size:13px;
+    min-width:600px
+}
+
+th {
+    background:#f7f9fd;
+    color:#75809b;
+    font-weight:700;
+    font-size:11px;
+    letter-spacing:.4px
+}
+
+th,td {
+    padding:15px 13px;
+    border-bottom:1px solid #edf0f7
+}
+
+td {
+    color:#35415d
+}
+
+.pill {
+    display:inline-block;
+    border-radius:25px;
+    padding:5px 9px;
+    font-size:11px;
+    font-weight:700;
+    background:#e5f8ee;
+    color:#24865a
+}
+
+.pill.inactive {
+    background:#fff0e9;
+    color:#b56b36
+}
+
+.action-btn {
+    border:0;
+    background:#ecf1ff;
+    color:#4e66ca;
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:12px;
+    margin-right:5px
+}
+
+.action-btn.danger {
+    background:#fff0f0;
+    color:#bd5656
+}
+
+.empty {
+    padding:38px 14px;
+    text-align:center;
+    color:#8994ab
+}
+
+.placeholder {
+    text-align:center;
+    padding:65px 22px
+}
+
+.placeholder span {
+    display:block;
+    font-size:50px;
+    color:#6c83eb
+}
+
+.placeholder p {
+    color:#7a859c
+}
+
+.placeholder h2 {
+    margin:12px 0
+}
+
+/* Janela de cadastro e edição. */
+dialog {
+    border:0;
+    border-radius:18px;
+    width:440px;
+    max-width:calc(100vw - 30px);
+    box-shadow:0 20px 80px #0e19435e;
+    padding:25px
+}
+
+dialog::backdrop {
+    background:#101a36a3
+}
+
+#form-aluno {
+    display:flex;
+    flex-direction:column;
+    gap:9px
+}
+
+.modal-head {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:10px
+}
+
+.modal-head h2 {
+    font-size:21px;
+    margin:0
+}
+
+#form-aluno label {
+    font-size:13px;
+    font-weight:700;
+    color:#3a4764;
+    margin-top:8px
+}
+
+#form-aluno label small {
+    color:#8992a5;
+    font-weight:400
+}
+
+.close-btn {
+    background:transparent;
+    border:0;
+    font-size:25px;
+    color:#8190ab
+}
+
+.modal-actions {
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:18px
+}
+
+/* Mensagens temporárias de sucesso ou erro. */
+.toast {
+    position:fixed;
+    bottom:25px;
+    right:25px;
+    max-width:350px;
+    background:#192648;
+    color:#fff;
+    padding:14px 18px;
+    border-radius:12px;
+    box-shadow:0 12px 35px #16234638;
+    opacity:0;
+    transform:translateY(12px);
+    pointer-events:none;
+    transition:.2s
+}
+
+.toast.show {
+    opacity:1;
+    transform:translateY(0)
+}
+
+.toast.error {
+    background:#ae3c47
+}
+
+/* Ajustes para telas menores. */
+@media(max-width:1050px) {
+    .stats {
+        grid-template-columns:repeat(2,1fr)
+    }
+
+}
+
+@media(max-width:760px) {
+    .layout {
+        display:block
+    }
+
+    .sidebar {
+        width:auto;
+        padding:14px
+    }
+
+    .brand {
+        padding-bottom:12px
+    }
+
+    .nav-label,.sidebar-footer {
+        display:none
+    }
+
+    nav {
+        display:flex;
+        overflow-x:auto;
+        gap:5px
+    }
+
+    .nav-btn {
+        white-space:nowrap;
+        width:auto;
+        padding:10px
+    }
+
+    .content {
+        padding:24px 16px 45px
+    }
+
+    .topbar {
+        margin-bottom:22px
+    }
+
+    .panel-grid {
+        grid-template-columns:1fr
+    }
+
+    .table-toolbar {
+        flex-wrap:wrap
+    }
+
+    .intro-banner {
+        padding:24px
+    }
+
+    .banner-symbol {
+        font-size:46px
+    }
+
+}
+
+@media(max-width:450px) {
+    .stats {
+        gap:10px
+    }
+
+    .stat-card {
+        padding:15px
+    }
+
+    .stat-card strong {
+        font-size:25px
+    }
+
+    .section-head {
+        align-items:flex-start;
+        flex-direction:column
+    }
+
+}
+
+/* Complementos visuais dos módulos da versão completa. */
+.form-stack { display:flex; flex-direction:column; gap:13px; margin-top:16px; }
+.form-stack label, .field-grid label { display:flex; flex-direction:column; gap:6px; font-size:13px; font-weight:600; color:#475571; }
+.form-stack input,.form-stack select,.field-grid input,.field-grid select { width:100%; }
+.field-grid { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px; }
+.item-list { margin-top:18px;display:flex;flex-direction:column;gap:9px; }
+.item-row { display:flex;gap:10px;align-items:center;justify-content:space-between;border-bottom:1px solid #edf0f7;padding:10px 0;font-size:13px; }
+.item-row strong { color:#24304b; }
+.item-row small { display:block;color:#8793a8;margin-top:4px; }
+.item-row > div { min-width:0; }
+.top-gap { margin-top:20px; }
+.note { color:#8691a7;font-size:12px;line-height:1.6;margin-top:16px; }
+.hidden { display:none !important; }
+.narrow { max-width:560px; }
+.grade-table { min-width:730px; }
+.grade-table td { vertical-align:top; min-width:115px; }
+.grade-table .subject { font-size:12px;font-weight:700;color:#3d56bb; }
+.grade-table .teacher { color:#8490aa;font-size:11px;margin-top:3px; }
+.grade-table .free { color:#adb6c6;font-size:12px; }
+.presence { display:flex; gap:15px;align-items:center; }
+.presence label { font-size:12px;display:flex;gap:5px;align-items:center;cursor:pointer; }
+.presence input { accent-color:#5672e5; }
+.note-input { max-width:110px;width:100%; }
+.status-ok { color:#15805c;font-weight:700; }
+.status-warn { color:#b75d35;font-weight:700; }
+@media(max-width:760px) { .field-grid {grid-template-columns:1fr;} .item-row {flex-wrap:wrap;} }
+
+/* Ações para gerar ou excluir o plano de aulas */
+.grade-actions { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+@media(max-width:760px) { .grade-actions { width:100%; } }
+
+/* Identificação de participantes e painel privado de acessos */
+.entrada-layout { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+.entrada-card { width: min(100%, 480px); padding: 0; overflow: hidden; }
+.entrada-brand { background: #111c38; color: white; padding: 28px; text-align: center; }
+.entrada-brand .brand-icon { margin: 0 auto 12px; }
+.entrada-brand p { color: #bdcae8; font-size: 13px; }
+.entrada-corpo { padding: 28px; }
+.entrada-corpo h2 { margin: 0 0 8px; }
+.entrada-corpo form { margin-top: 20px; }
+.entrada-corpo .ciencia { display: flex; flex-direction: row; align-items: flex-start; gap: 9px; font-size: 13px; }
+.entrada-corpo .ciencia input { width: auto; margin: 3px 0 0; }
+.entrada-erro { background: #fff0f0; color: #a52d3a; padding: 12px; border-radius: 8px; }
+.usuario-demo { display: flex; align-items: center; gap: 10px; }
+.acessos-admin { margin: 0 auto; }
+.acessos-admin a { text-decoration: none; display: inline-block; }
